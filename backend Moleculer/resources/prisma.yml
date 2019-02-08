@@ -1,0 +1,9 @@
+endpoint: http://localhost:4465
+datamodel: datamodel.prisma
+generate:
+  - generator: javascript-client
+    output: src/generated/prisma-client/
+# Ensures Prisma client is re-generated after a datamodel change.
+hooks:
+  post-deploy:
+    - prisma generate

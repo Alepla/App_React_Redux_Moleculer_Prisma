@@ -1,0 +1,26 @@
+scalar DateTime
+
+input MessageInput {
+  content: String!
+  author: String!
+}
+
+type Query {
+  messages: [message!]!
+}
+
+type Mutation {
+  createMessage(data: MessageInput): message
+}
+
+type Subscription {
+  messageSubs: message
+}
+
+type message {
+  id: ID!
+  content: String!
+  author: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}

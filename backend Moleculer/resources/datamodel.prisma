@@ -1,0 +1,30 @@
+type user {
+  id: ID! @unique
+  username: String! @unique
+  name: String
+  lastName: String
+  email: String! @unique
+  password: String!
+  friends: [user!]
+  bio: String
+  image: String
+  locality: String
+  birthDay: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type requests {
+  id: ID! @unique
+  userApplicant: user! @relation(name: "UserApplicant")
+  userRequested: user! @relation(name: "UserRequested")
+  createdAt: DateTime!
+}
+
+type message {
+  id: ID!
+  content: String!
+  author: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
