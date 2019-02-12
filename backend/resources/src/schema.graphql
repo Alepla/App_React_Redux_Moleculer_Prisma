@@ -6,18 +6,18 @@ input MessageInput {
 }
 
 type Query {
-  messages: [message!]!
+  messages: [Message!]!
 }
 
 type Mutation {
-  createMessage(data: MessageInput): message
+  createMessage(data: MessageInput): Message
 }
 
 type Subscription {
-  messageSubs: message
+  messageSubs: Message!
 }
 
-type message {
+type Message {
   id: ID!
   content: String!
   author: String!

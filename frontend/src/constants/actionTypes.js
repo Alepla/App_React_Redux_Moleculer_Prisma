@@ -45,3 +45,6 @@ export const FIND_USERS = 'FIND_USERS';
 export const APPLY_FILTROS = 'APPLY_FILTROS';
 export const UPDATE_FIELD_LOGIN = 'UPDATE_FIELD_LOGIN';
 export const CREATE_USER = 'CREATE_USER';
+export const SEND_MESSAGE = 'SEND_MESSAGE';
+export const CHAT_LOADED = 'CHAT_LOADED';
+export const CHAT_UNLOADED = 'CHAT_UNLOADED';

@@ -6,13 +6,13 @@ const { MoleculerClientError } = require("moleculer").Errors;
 const bcrypt 		= require("bcrypt");
 const jwt 			= require("jsonwebtoken");
 
-const DbService = require("../mixins/db.mixin");
+//const DbService = require("../mixins/db.mixin");
 
 const { prisma } = require('../resources/src/generated/prisma-client');
 
 module.exports = {
 	name: "users",
-	mixins: [DbService("users")],
+	//mixins: [DbService("users")],
 
 	/**
 	 * Default settings

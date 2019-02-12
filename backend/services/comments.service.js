@@ -1,11 +1,11 @@
 "use strict";
 
 const { ForbiddenError } = require("moleculer-web").Errors;
-const DbService = require("../mixins/db.mixin");
+//const DbService = require("../mixins/db.mixin");
 
 module.exports = {
 	name: "comments",
-	mixins: [DbService("comments")],
+	//mixins: [DbService("comments")],
 
 	/**
 	 * Default settings

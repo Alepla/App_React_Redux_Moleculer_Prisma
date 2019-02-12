@@ -1,13 +1,16 @@
 import React from 'react';
 import agent from '../../agent';
 import { connect } from 'react-redux';
+import { SEND_MESSAGE } from '../../constants/actionTypes';
+
 
 const mapStateToProps = state => ({
-
+    currentUser: state.common.currentUser
 });
 
 const mapDispatchToProps = dispatch => ({
-
+    onSubmit: (message, author) => 
+        dispatch({ type: SEND_MESSAGE, payload: agent.Chat.sendMessage(message, author) })
 });
 
 class SendMessage extends React.Component {
@@ -21,8 +24,8 @@ class SendMessage extends React.Component {
     }
 
     onSubmit(e) {
-        e.preventDefault()
-        this.props.onSubmit(this.state.text);
+        e.preventDefault();
+        this.props.onSubmit(this.state.text, this.props.currentUser.username);
         this.setState({ text: '' });
     }
 

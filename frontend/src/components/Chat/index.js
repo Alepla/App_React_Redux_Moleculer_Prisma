@@ -3,37 +3,30 @@ import agent from '../../agent';
 import { connect } from 'react-redux';
 import MessageList from './messageList';
 import SendMessage from './sendMessage';
+import { CHAT_LOADED, CHAT_UNLOADED } from '../../constants/actionTypes';
 
 const mapStateToProps = state => ({
-
+    ...state.chat,
 });
 
 const mapDispatchToProps = dispatch => ({
-
+    onLoad: payload =>
+        dispatch({ type: CHAT_LOADED, payload }),
+    onUnload: () =>
+        dispatch({ type: CHAT_UNLOADED }),
 });
 
 class Chat extends React.Component {
-    constructor() {
-        super()
-        this.state = {
-            currentUser: {},
-            currentRoom: {},
-            messages: ""
-        }
-        this.sendMessage = this.sendMessage.bind(this);
-    }
-
-    sendMessage(text) {
-    }
-
-    componentDidMount() {
-
+    componentWillMount() {
+        this.props.onLoad(Promise.all([
+            agent.Chat.listMessages()
+        ]))
     }
 
     render() {
         const styles = {
             container: {
-                height: '100vh',
+                height: '96vh',
                 display: 'flex',
                 flexDirection: 'column'
             },
@@ -55,15 +48,19 @@ class Chat extends React.Component {
                 flexDirection: 'column'
             }
         }
-        console.log(this.state.messages);
+
+        if (!this.props.messages) {
+            return null;
+        }
+
         return (
             <div style={styles.container}>
                 <div style={styles.chatContainer}>
                     <aside style={styles.whosOnlineListContainer}>
-                       <h2>Who's online PLACEHOLDER</h2>
+                       <h2>Global chat</h2>
                     </aside>
                     <section style={styles.chatListContainer}>
-                        <MessageList messages={this.state.messages}  style={styles.chatList} />
+                        <MessageList messages={this.props.messages}  style={styles.chatList} />
                         <SendMessage onSubmit={this.sendMessage} onChange={this.sendTypingEvent}/> 
                     </section>
                 </div>

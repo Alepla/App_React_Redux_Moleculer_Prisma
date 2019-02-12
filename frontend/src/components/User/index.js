@@ -44,14 +44,6 @@ class User extends React.Component {
             My Friends
           </Link>
         </li>
-
-        <li className="nav-item">
-          <Link
-            className="nav-link"
-            to={`/@${this.props.match.params.username}/posts`}>
-            My Posts
-          </Link>
-        </li>
       </ul>
     );
   }

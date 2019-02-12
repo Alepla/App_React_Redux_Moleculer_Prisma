@@ -5,13 +5,13 @@ const { ForbiddenError } = require("moleculer-web").Errors;
 
 const _ = require("lodash");
 const slug = require("slug");
-const DbService = require("../mixins/db.mixin");
+//const DbService = require("../mixins/db.mixin");
 
 const { prisma } = require('../resources/src/generated/prisma-client')
 
 module.exports = {
 	name: "articles",
-	mixins: [DbService("articles")],
+	//mixins: [DbService("articles")],
 
 	/**
 	 * Default settings

@@ -1,14 +1,8 @@
 import React from 'react';
-import agent from '../../agent';
 import { connect } from 'react-redux';
 
-const mapStateToProps = state => ({
-
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
+const mapStateToProps = state => ({});
+const mapDispatchToProps = dispatch => ({});
 class MessageList extends React.Component {
     render() {
         const styles = {
@@ -30,18 +24,17 @@ class MessageList extends React.Component {
                 fontSize: 15 
             }
         }
-        console.log(this.props.messages);
         return (
             <div style={{ ...this.props.style, ...styles.container }}>
                 <ul style={styles.ul}>
-        {/*         {this.props.messages.map((message, index) => (
-                      <li key={index} style={styles.li}>
+                 {this.props.messages.map((x, i) => (
+                      <li key={i} style={styles.li}>
                           <div>
-                              <span style={styles.senderUsername}>{message.senderId}</span>{' '}
+                              <span style={styles.senderUsername}>{x.author}</span>{' '}
                           </div>
-                          <p style={styles.message}>{message.text}</p>
+                          <p style={styles.message}>{x.content}</p>
                       </li>
-                    ))} */}
+                    ))}
                 </ul>
           </div>
         )

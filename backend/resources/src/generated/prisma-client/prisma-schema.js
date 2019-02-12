@@ -21,6 +21,8 @@ scalar Long
 
 type message {
   id: ID!
+  content: String!
+  author: String!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -31,6 +33,11 @@ type messageConnection {
   aggregate: Aggregatemessage!
 }
 
+input messageCreateInput {
+  content: String!
+  author: String!
+}
+
 type messageEdge {
   node: message!
   cursor: String!
@@ -39,6 +46,10 @@ type messageEdge {
 enum messageOrderByInput {
   id_ASC
   id_DESC
+  content_ASC
+  content_DESC
+  author_ASC
+  author_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -47,6 +58,8 @@ enum messageOrderByInput {
 
 type messagePreviousValues {
   id: ID!
+  content: String!
+  author: String!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -69,6 +82,16 @@ input messageSubscriptionWhereInput {
   NOT: [messageSubscriptionWhereInput!]
 }
 
+input messageUpdateInput {
+  content: String
+  author: String
+}
+
+input messageUpdateManyMutationInput {
+  content: String
+  author: String
+}
+
 input messageWhereInput {
   id: ID
   id_not: ID
@@ -84,6 +107,34 @@ input messageWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_lt: String
+  content_lte: String
+  content_gt: String
+  content_gte: String
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  author: String
+  author_not: String
+  author_in: [String!]
+  author_not_in: [String!]
+  author_lt: String
+  author_lte: String
+  author_gt: String
+  author_gte: String
+  author_contains: String
+  author_not_contains: String
+  author_starts_with: String
+  author_not_starts_with: String
+  author_ends_with: String
+  author_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -110,7 +161,10 @@ input messageWhereUniqueInput {
 }
 
 type Mutation {
-  createmessage: message!
+  createmessage(data: messageCreateInput!): message!
+  updatemessage(data: messageUpdateInput!, where: messageWhereUniqueInput!): message
+  updateManymessages(data: messageUpdateManyMutationInput!, where: messageWhereInput): BatchPayload!
+  upsertmessage(where: messageWhereUniqueInput!, create: messageCreateInput!, update: messageUpdateInput!): message!
   deletemessage(where: messageWhereUniqueInput!): message
   deleteManymessages(where: messageWhereInput): BatchPayload!
   createrequests(data: requestsCreateInput!): requests!

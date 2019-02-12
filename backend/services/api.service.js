@@ -79,6 +79,10 @@ module.exports = {
 
 				//Friends
 				"POST /friends": "friends.listMyFriends",
+
+				//Chat
+				"GET /chat/messages": "chat.listMessages",
+				"POST /chat/send": "chat.sendMessage"
 				
 			},
 

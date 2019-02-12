@@ -45,6 +45,13 @@ const Users = {
     requests.post('/users/search',  { username_contains })
 }
 
+const Chat = {
+  listMessages: () => 
+    requests.get('/chat/messages'),
+  sendMessage: (message, author) => 
+    requests.post('/chat/send', { data: { author, message } })
+};
+
 
 const Auth = {
   current: () => 
@@ -115,5 +122,6 @@ export default {
   Contact,
   Friends,
   Users,
+  Chat,
   setToken: _token => { token = _token; }
 };

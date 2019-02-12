@@ -2,39 +2,30 @@ const { GraphQLServer } = require('graphql-yoga')
 const { prisma } = require('./generated/prisma-client')
 
 const resolvers = {
-    Query: {
+     Query: {
         messages(root, args, context) {
             return context.prisma.messages()
         }
     },
     Mutation: {
         createMessage(root, args, context) {
-            console.log(args);
             return context.prisma.createmessage(
                 { 
-
-                    data: {
-                        createMessage: {
-                            content: args.data.content,
-                            author: args.data.author
-                        }
-
-                    }
-                    
+                    content: args.data.content,
+                    author: args.data.author
                 }
             )
         }
-    },
+    }, 
     Subscription: {
         messageSubs: {
-            subscribe: async (parent, args, context) => {
-                return context.prisma.$subscribe
-                .message({
-                    mutation_in: ['CREATED'],
-                })
-                .node()
+            subscribe: async (parent, args, context, info) => {
+                return context.prisma.$subscribe.message({
+                    mutation_in: ['CREATED', 'UPDATED']
+                }).node()
             },
             resolve: payload => {
+                console.log(payload);
                 return payload
             },
         },
