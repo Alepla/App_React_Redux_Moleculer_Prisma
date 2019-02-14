@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SearchComponent from './SearchComponent';
+import { Icon, Button, Label } from 'semantic-ui-react'
 
 const LoggedOutView = props => {
   if (!props.currentUser) {
@@ -24,12 +25,6 @@ const LoggedOutView = props => {
             Login
           </Link>
         </li>
-
-{/*         <li className="nav-item">
-          <Link to="/register" className="nav-link">
-            Sign up
-          </Link>
-        </li> */}
 
       </ul>
     );
@@ -65,6 +60,19 @@ const LoggedInView = props => {
         </li>
 
         <li className="nav-item">
+          <Link to="/notifications">
+            <Button as='div' labelPosition='right'>
+              <Button icon>
+                <Icon name='envelope' size='large' />
+              </Button>
+              <Label basic pointing='left'>
+                {props.notificationsCount.count}
+              </Label>
+            </Button>
+          </Link>
+        </li>
+
+        <li className="nav-item">
           <Link
             to={`/@${props.currentUser.username}`}
             className="nav-link">
@@ -89,9 +97,9 @@ class Header extends React.Component {
             {this.props.appName.toLowerCase()}
           </Link>
 
-          <LoggedOutView currentUser={this.props.currentUser} />
+          <LoggedOutView currentUser={this.props.currentUser} notificationsCount={this.props.notificationsCount} />
 
-          <LoggedInView currentUser={this.props.currentUser} />
+          <LoggedInView currentUser={this.props.currentUser} notificationsCount={this.props.notificationsCount} />
         </div>
       </nav>
     );

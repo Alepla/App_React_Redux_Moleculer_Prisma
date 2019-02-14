@@ -1,10 +1,6 @@
-/* import article from './reducers/article';
-import articleList from './reducers/articleList'; */
 import { combineReducers } from 'redux';
 import common from './reducers/common';
-/* import editor from './reducers/editor'; */
 import home from './reducers/home';
-import profile from './reducers/profile';
 import settings from './reducers/settings';
 import contact from './reducers/contact';
 import friendsList from './reducers/friendsList';
@@ -15,12 +11,8 @@ import chat from './reducers/chat';
 import { routerReducer } from 'react-router-redux';
 
 export default combineReducers({
-/*   article,
-  articleList, */
   common,
-/*   editor, */
   home,
-  profile,
   settings,
   contact,
   friendsList,

@@ -42,7 +42,11 @@ const Users = {
   findAllFirends: (userName, vars) =>
     requests.post('/user/allFriends', { userName, vars }),
   findUsers: (username_contains) => 
-    requests.post('/users/search',  { username_contains })
+    requests.post('/users/search',  { username_contains }),
+  createRequest: (userApplicant, userRequested) =>
+    requests.post('/users/createRequest', { userApplicant, userRequested }),
+  countNotifications: (userRequested) => 
+    requests.post('/users/countNotifications', { userRequested })
 }
 
 const Chat = {

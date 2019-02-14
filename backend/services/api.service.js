@@ -42,6 +42,10 @@ module.exports = {
 				//Users search
 				"POST /users/search": "users.findUsers",
 
+				//Requests
+				"POST /users/createRequest": "users.createRequest",
+				"POST /users/countNotifications": "users.countNotifications",
+
 				// Articles
 				"GET /articles/feed": "articles.feed",
 				//"OPTIONS /articles/login": "users.cors",

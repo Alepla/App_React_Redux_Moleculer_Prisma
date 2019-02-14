@@ -5,6 +5,9 @@ import { USER_PAGE_LOADED, USER_PAGE_UNLOADED, APPLY_FILTROS } from '../../const
 import ProfileFriendsList from './ProfileFriendsList';
 import { Link } from 'react-router-dom';
 import Filtros from './Filtros';
+import ButtonAddFriend from './buttonAddFriend';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const mapStateToProps = state => ({
   ...state.user,
@@ -66,7 +69,7 @@ class User extends React.Component {
                 <img src={this.props.user.image} className="user-img" alt={this.props.user.username} />
                 <h4>{this.props.user.username}</h4>
                 <p>{this.props.user.bio}</p>
-
+                <ButtonAddFriend userApplicant={this.props.currentUser.username} userRequested={this.props.user.username} />
               </div>
             </div>
           </div>
@@ -89,6 +92,17 @@ class User extends React.Component {
                 currentPage={this.props.currentPage}
                 username={this.props.match.params.username}
                 filtros={this.props.filtros}
+              />
+              <ToastContainer 
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnVisibilityChange
+                draggable
+                pauseOnHover
               />
             </div>
           </div>

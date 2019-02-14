@@ -202,23 +202,24 @@ module.exports = {
 		 */
 		me: {
 			auth: "required",
- 			cache: {
+/*   			cache: {
 				keys: ["#token"]
-			},
+			}, */
 			async handler(ctx) {
 				const query = `
-					query users($where: userWhereInput!){
+					query users($where: userWhereInput!, $where2: requestsWhereInput!){
 						users(where: $where){
 							id
 							username
 							email
 							image
+						} requestsesConnection(where: $where2){
+							aggregate{count}
 						}
-					}`
-				;
-				const variables = { where: { id: ctx.meta.user.id } };
+					}`;
+				const variables = { where: { id: ctx.meta.user.id }, where2: { userRequested: { id: ctx.meta.user.id } } };
 				const user = await prisma.$graphql(query, variables);
-				return this.transformEntity(user.users, true, ctx.meta.token);
+				return this.transformEntity(user.users, true, ctx.meta.token, user.requestsesConnection);
 			}
 		},
 
@@ -474,6 +475,60 @@ module.exports = {
 				const users = await prisma.$graphql(query, variables);
 				return users;
 			}
+		},
+		createRequest: {
+			params: {
+				userApplicant: { type: "string" },
+				userRequested: { type: "string" }
+			},
+			async handler(ctx) {
+				const mutation = `
+					mutation createrequests($data: requestsCreateInput!) {
+						createrequests(data: $data) {
+							id
+							userApplicant{ username }
+							userRequested{ username }
+						}
+					}
+				`;
+				const variables = {
+					data: {
+						userApplicant: {
+							connect: {
+								username: ctx.params.userApplicant
+							}
+						},
+						userRequested: {
+							connect: {
+								username: ctx.params.userRequested
+							}
+						}
+					}
+				};
+				const createRequest = await prisma.$graphql(mutation, variables);
+				return createRequest;
+			}
+		},
+		countNotifications: {
+			params: {
+				userRequested: { type: "string" }
+			},
+			async handler(ctx) {
+				const query = `
+					query requestses($where: requestsWhereInput!) {
+						requestsesConnection(where: $where){
+							aggregate{count}
+				  		}
+					}
+				`;
+				const variables = {
+					where: {
+						userRequested: { username: ctx.params.userRequested }
+					}
+				};
+				const countNotifications = await prisma.$graphql(query, variables);
+				return countNotifications;
+			}
 		}
 	},
 
@@ -504,14 +559,14 @@ module.exports = {
 		 * @param {Object} user 
 		 * @param {Boolean} withToken 
 		 */
-		transformEntity(user, withToken, token) {
+		transformEntity(user, withToken, token, requestsesConnection) {
 			if (user) {
 				//user.image = user.image || "https://www.gravatar.com/avatar/" + crypto.createHash("md5").update(user.email).digest("hex") + "?d=robohash";
 				user.image = user.image || "";
 				if (withToken)
 					user.token = token || this.generateJWT(user);
 			}
-			return { user };
+			return { user, requestsesConnection };
 		},
 
 		/**
