@@ -45,8 +45,12 @@ const Users = {
     requests.post('/users/search',  { username_contains }),
   createRequest: (userApplicant, userRequested) =>
     requests.post('/users/createRequest', { userApplicant, userRequested }),
-  countNotifications: (userRequested) => 
-    requests.post('/users/countNotifications', { userRequested })
+  findRequests: (username) => 
+    requests.post('/users/notifications', { username }),
+  refuseUser: (id) => 
+    requests.post('/users/refuseUser', { id }),
+  acceptUser: (idRequest, idUserApplicant, idUserRequested) =>
+    requests.post('/users/acceptUser', { idRequest, idUserApplicant, idUserRequested })
 }
 
 const Chat = {

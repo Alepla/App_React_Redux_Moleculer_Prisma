@@ -287,9 +287,9 @@ module.exports = {
 		 * @returns {Object} User entity
 		 */
 		profile: {
-			cache: {
+/* 			cache: {
 				keys: ["#token", "username"]
-			},
+			}, */
 			params: {
 				username: { type: "string" }
 			},
@@ -509,28 +509,150 @@ module.exports = {
 				return createRequest;
 			}
 		},
-		countNotifications: {
+		notifications: {
 			params: {
-				userRequested: { type: "string" }
+				username: { type: "string" }
 			},
 			async handler(ctx) {
 				const query = `
-					query requestses($where: requestsWhereInput!) {
-						requestsesConnection(where: $where){
-							aggregate{count}
-				  		}
+					query users($where: requestsWhereInput!){
+						requestses(where: $where){
+							id
+							userApplicant{
+								id 
+								username
+								bio
+								email
+								name
+								lastName
+								image
+							}
+						}
+					}`;
+				const variables = {
+					where: {
+						userRequested: { username: ctx.params.username }
+					}
+				};
+				const notifications = await prisma.$graphql(query, variables);
+				return notifications;
+				/*let users = notifications.requestses.map((x) => {
+					const queryUsers = `
+						query users($where: userWhereInput!){
+							users(where: $where){
+								id
+								name
+								username
+								lastName
+								email
+								bio
+								image
+								locality
+							}
+						}`;
+					const variables2 = {
+						where: {
+							username: x.userApplicant.username
+						}
+					};
+					return prisma.$graphql(queryUsers, variables2);
+				})
+				return Promise.all(users).then((res) => {
+					return res;
+				})*/
+			}
+		},
+		refuse: {
+			params: {
+				id: { type: 'string' }
+			},
+			async handler(ctx) {
+				const mutation = `
+					mutation refuse($id: requestsWhereUniqueInput!) {
+						deleterequests(where: $id) {
+							id
+						}
+					}
+				`;
+				const variables = {
+					id: {
+						id: ctx.params.id
+					}
+				}
+				return prisma.$graphql(mutation, variables);
+			}
+		},
+		accept: {
+			params: {
+				idRequest: { type: 'string' },
+				idUserApplicant: { type: 'string' },
+				idUserRequested: { type: 'string' }
+			},
+			async handler(ctx) {
+				/**Add UserApplicant friend */
+				const mutation = `
+					mutation addFriend($where: userWhereUniqueInput!, $data: userUpdateInput!) {
+						updateuser(where: $where, data: $data) {
+							id
+							name
+							friends { username }
+						}
 					}
 				`;
 				const variables = {
 					where: {
-						userRequested: { username: ctx.params.userRequested }
+						id: ctx.params.idUserRequested
+					},
+					data: {
+						friends: {
+							connect: {
+								id: ctx.params.idUserApplicant
+							}
+						}
 					}
-				};
-				const countNotifications = await prisma.$graphql(query, variables);
-				return countNotifications;
+				}
+				await prisma.$graphql(mutation, variables);
+				/**Add UserRequestes friend */
+				const mutation2 = `
+					mutation addFriend($where: userWhereUniqueInput!, $data: userUpdateInput!) {
+						updateuser(where: $where, data: $data) {
+							id
+							name
+							friends { username }
+						}
+					}
+				`;
+				const variables2 = {
+					where: {
+						id: ctx.params.idUserApplicant
+					},
+					data: {
+						friends: {
+							connect: {
+								id: ctx.params.idUserRequested
+							}
+						}
+					}
+				}
+				await prisma.$graphql(mutation2, variables2);
+				/**Delete request */
+				const Delete = `
+					mutation refuse($id: requestsWhereUniqueInput!) {
+						deleterequests(where: $id) {
+							id
+						}
+					}
+				`;
+				const variablesDelete = {
+					id: {
+						id: ctx.params.idRequest
+					}
+				}
+				await prisma.$graphql(Delete, variablesDelete);
 			}
 		}
 	},
+
 
 	/**
 	 * Methods

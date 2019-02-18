@@ -8,6 +8,7 @@ import user from './reducers/user';
 import findUsers from './reducers/findUsers';
 import login from './reducers/login';
 import chat from './reducers/chat';
+import notifications from './reducers/notifications';
 import { routerReducer } from 'react-router-redux';
 
 export default combineReducers({
@@ -20,5 +21,6 @@ export default combineReducers({
   findUsers,
   login,
   chat,
+  notifications,
   router: routerReducer
 });

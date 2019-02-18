@@ -44,7 +44,9 @@ module.exports = {
 
 				//Requests
 				"POST /users/createRequest": "users.createRequest",
-				"POST /users/countNotifications": "users.countNotifications",
+				"POST /users/notifications": "users.notifications",
+				"POST /users/refuseUser": "users.refuse",
+				"POST /users/acceptUser": "users.accept",
 
 				// Articles
 				"GET /articles/feed": "articles.feed",
